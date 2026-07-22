@@ -1,14 +1,50 @@
 <script setup>
-// 🔨 [A · Req 6] Reciban por props (con validación) lo que el padre calcula:
-//    total (Number), cantidad (Number),
-//    porCategoria (Array de { nombre, emoji, monto, porcentaje }).
+const props = defineProps({
+  total: {
+    type: Number,
+    required: true,
+  },
+  cantidad: {
+    type: Number,
+    required: true,
+  },
+  porCategoria: {
+    type: Array,
+    required: true,
+    // Array de { nombre, emoji, monto, porcentaje }
+  },
+})
 </script>
 
 <template>
-  <!-- 🔨 [A] Muestren: un título, el total grande, la cantidad de gastos,
-       y una barra por categoría (v-for sobre porCategoria) donde el ancho sea
-       :style="{ width: cat.porcentaje + '%' }".
-       Clases disponibles: .total-big, .barra-row, .lbl, .barra, .fill -->
+  <div>
+    <h2>Resumen</h2>
+    <p>Total gastado</p>
+    <p class="total-big">
+      ${{ props.total.toLocaleString('es-CL') }}
+    </p>
+    <p>
+      {{ props.cantidad }} gasto<span v-if="props.cantidad !== 1">s</span>
+    </p>
+
+    <hr />
+
+    <div v-for="cat in props.porCategoria" :key="cat.nombre" class="barra-row">
+      <div class="lbl">
+        <span>{{ cat.emoji }} {{ cat.nombre }}</span>
+        <span>
+          ${{ cat.monto.toLocaleString('es-CL') }}
+          · {{ cat.porcentaje }}%
+        </span>
+      </div>
+      <div class="barra">
+        <div
+          class="fill"
+          :style="{ width: cat.porcentaje + '%' }"
+        ></div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
