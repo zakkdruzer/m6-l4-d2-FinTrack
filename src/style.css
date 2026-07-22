@@ -1,0 +1,62 @@
+:root {
+  --primary: #42b883; --primary-2: #35495e; --panel: #1e293b;
+  --ink: #e2e8f0; --muted: #94a3b8; --line: #334155;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: "Segoe UI", system-ui, sans-serif;
+  background: #0f172a; color: var(--ink);
+}
+#app { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+h1 { color: var(--primary); }
+
+.finapp { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.25rem; }
+@media (max-width: 780px) { .finapp { grid-template-columns: 1fr; } }
+.card {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 1.25rem 1.5rem;
+}
+.card h2 { margin-top: 0; color: var(--primary); font-size: 1.1rem; }
+
+/* Formulario */
+.fin-form { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.fin-form input, .fin-form select {
+  padding: .55rem .7rem; border: 1px solid #cbd5e1; border-radius: 8px;
+  font-size: .95rem; background: #fff; color: #1e293b; font-family: inherit;
+}
+.fin-form input[type=text] { flex: 1; min-width: 140px; }
+.fin-form input[type=number] { width: 120px; }
+.btn {
+  background: var(--primary); color: #0f172a; border: none;
+  padding: .55rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer;
+}
+
+/* Filtro */
+.filtro { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0; }
+.chip {
+  background: #334155; color: #e2e8f0; border: none; padding: .35rem .8rem;
+  border-radius: 999px; cursor: pointer; font-size: .85rem; font-weight: 600;
+}
+.chip.activa { background: var(--primary); color: #0f172a; }
+
+/* Lista de gastos */
+.gasto-item {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .6rem 0; border-bottom: 1px dashed var(--line);
+}
+.gasto-item .emoji { font-size: 1.4rem; }
+.gasto-item .desc { flex: 1; font-weight: 600; }
+.gasto-item .monto { font-weight: 800; color: var(--primary); }
+.mini {
+  background: #334155; color: #e2e8f0; border: none; border-radius: 6px;
+  width: 26px; height: 26px; font-weight: 800; cursor: pointer;
+}
+.mini.del { background: #ef4444; color: #fff; }
+.vacio { color: var(--muted); font-style: italic; text-align: center; padding: 1.5rem 0; }
+
+/* Resumen */
+.total-big { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
+.barra-row { margin: .6rem 0; }
+.barra-row .lbl { display: flex; justify-content: space-between; font-size: .85rem; margin-bottom: .2rem; }
+.barra { background: #0f172a; border-radius: 999px; height: 12px; overflow: hidden; }
+.barra .fill { background: var(--primary); height: 100%; border-radius: 999px; transition: width .3s; }
