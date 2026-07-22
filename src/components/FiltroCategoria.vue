@@ -1,14 +1,42 @@
 <script setup>
-// 🔨 [B · Req 8] Reciban 'categorias' (Array) y 'activa' (String) por props.
-// 🔨 [B · Req 8] Declaren y emitan el evento 'filtrar' con la categoría elegida.
+const props = defineProps({
+  categorias: {
+    type: Array,
+    required: true,
+  },
+  activa: {
+    type: String,
+    required: true,
+  },
+})
+
+const emit = defineEmits(['filtrar'])
+
+const seleccionar = (categoria) => {
+  emit('filtrar', categoria)
+}
 </script>
 
 <template>
-  <!-- 🔨 [B] Un chip "Todas" + un chip por cada categoría (v-for).
-       Marquen el activo con :class="{ activa: activa === nombre }"
-       y al @click emitan 'filtrar' con ese nombre.
-       Clases disponibles: .filtro, .chip, .chip.activa -->
-</template>
+  <div class="filtro">
+    <button
+      class="chip"
+      :class="{ activa: activa === 'Todas' }"
+      type="button"
+      @click="seleccionar('Todas')"
+    >
+      Todas
+    </button>
 
-<style scoped>
-</style>
+    <button
+      v-for="cat in categorias"
+      :key="cat"
+      class="chip"
+      :class="{ activa: activa === cat }"
+      type="button"
+      @click="seleccionar(cat)"
+    >
+      {{ cat }}
+    </button>
+  </div>
+</template>

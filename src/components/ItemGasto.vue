@@ -1,17 +1,52 @@
 <script setup>
-// 🔨 [B · Req 3] Reciban el gasto por prop, con validación (type Object, required).
-// 🔨 [B · Req 5] Declaren los eventos 'eliminar' y 'ajustar' (defineEmits).
-//               El hijo NO borra ni cambia el monto: SOLO emite (con el id).
+import { computed } from 'vue'
 
-// Mapa de emojis por categoría (dato acordado, úsenlo):
-const emojis = { Comida:'🍔', Transporte:'🚗', 'Súper':'🛒', Ocio:'🎬', Otros:'📦' }
+const props = defineProps({
+  gasto: {
+    type: Object,
+    required: true,
+  },
+})
+
+const emit = defineEmits(['eliminar', 'ajustar'])
+
+const emojis = { Comida: '🍔', Transporte: '🚗', 'Súper': '🛒', Ocio: '🎬', Otros: '📦' }
+
+const emojiCategoria = computed(() => emojis[props.gasto.categoria] || '📦')
+
+const formatearMonto = (m) => {
+  return '$' + m.toLocaleString('es-CL')
+}
+
+const eliminar = () => {
+  emit('eliminar', props.gasto.id)
+}
+
+const ajustarMenos = () => {
+  emit('ajustar', props.gasto.id, -500)
+}
+
+const ajustarMas = () => {
+  emit('ajustar', props.gasto.id, 500)
+}
 </script>
 
 <template>
-  <!-- 🔨 [B] Una fila con: emoji de la categoría (emojis[gasto.categoria]),
-       descripción, monto formateado, y botones  −  +  ✕  que emitan
-       ajustar(id,-500) / ajustar(id,500) / eliminar(id).
-       Clases disponibles: .gasto-item, .emoji, .desc, .monto, .mini, .mini.del -->
+  <div class="gasto-item">
+    <span class="emoji">{{ emojiCategoria }}</span>
+    <span class="desc">{{ gasto.descripcion }}</span>
+    <span class="monto">{{ formatearMonto(gasto.monto) }}</span>
+
+    <button class="mini" type="button" @click="ajustarMenos">
+      −
+    </button>
+    <button class="mini" type="button" @click="ajustarMas">
+      +
+    </button>
+    <button class="mini del" type="button" @click="eliminar">
+      ✕
+    </button>
+  </div>
 </template>
 
 <style scoped>

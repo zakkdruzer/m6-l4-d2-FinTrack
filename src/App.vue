@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch} from 'vue'
 import FormularioGasto from './components/FormularioGasto.vue'
 import ItemGasto from './components/ItemGasto.vue'
 import FiltroCategoria from './components/FiltroCategoria.vue'
@@ -15,7 +15,10 @@ const CATEGORIAS = [
 ]
 
 // Estado del padre
-const gastos = ref([])
+const STORAGE_KEY = 'fintrack-gastos'
+
+// Leer al iniciar: si no hay nada, usar []
+const gastos = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
 const filtroActivo = ref('Todas')
 let ultimoId = 0
 
@@ -74,6 +77,14 @@ const porCategoria = computed(() => {
 })
 
 const cantidad = computed(() => gastos.value.length)
+
+watch(
+  gastos,
+  (nuevo) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nuevo))
+  },
+  { deep: true }
+)
 </script>
 
 <template>
@@ -83,7 +94,7 @@ const cantidad = computed(() => gastos.value.length)
     <div class="card">
       <h2>Nuevo gasto</h2>
       <FormularioGasto
-        :categorias="CATEGORIAS"
+        :categorias="CATEGORIAS.map(c => c.nombre)"
         @agregar="agregarGasto"
       />
 
